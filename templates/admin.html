@@ -41,16 +41,17 @@
 {% if correct_flag %}
   <div class="success">
     <h2>Challenge Complete!</h2>
-    <h3>Challenge Summary</h3>
-    <ul>
-      <li><strong>SQL Injection</strong> on the login page allowed bypassing authentication with <code>' OR '1'='1</code>.</li>
-      <li><strong>Command Injection</strong> logic let you execute <code>whoami</code> and extract an encoded flag.</li>
-    </ul>
-    <h3>How to Prevent:</h3>
-    <ul>
-      <li>Use parameterized queries or ORM to avoid SQL injection.</li>
-      <li>Never pass user input into shell commands without strict validation. Use <code>subprocess.run(..., shell=False)</code>.</li>
-    </ul>
+   <h2>Challenge Summary</h2>
+<ul>
+  <li><strong>SQL Injection</strong> on the login page allowed bypassing authentication using <code>' OR '1'='1</code>.</li>
+  <li><strong>Command Injection</strong> on the /ping route let you execute shell commands like <code>whoami</code> to retrieve an encoded flag.</li>
+</ul>
+
+<h3>How to Prevent:</h3>
+<ul>
+  <li>Use <strong>parameterized queries</strong> or an <strong>ORM</strong> to prevent SQL injection.</li>
+  <li>Validate and sanitize all user input before using it in shell commands. Use <code>subprocess.run(..., shell=False)</code> to disable shell parsing.</li>
+</ul>
   </div>
 {% endif %}
 
