@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel – MiniCTF</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <p>Welcome, admin. You may run a system-level command below.</p>
+
+  <form method="post">
+    <input type="text" name="command" placeholder="Enter a command..." required><br>
+    <button type="submit">Run Command</button>
+  </form>
+
+  {% if output %}
+    <div>
+      <h2>Output</h2>
+      <pre>{{ output }}</pre>
+    </div>
+  {% endif %}
+
+  {% if show_flag %}
+    <div class="success">
+      ✅ Nice work! You’ve unlocked the final flag!<br><br>
+      <a class="button" href="{{ url_for('flag') }}">Go to Flag →</a>
+    </div>
+  {% endif %}
+</body>
+</html>
