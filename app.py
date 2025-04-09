@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, session
 import os
 import subprocess
+import base64
 
 app = Flask(__name__)
 app.secret_key = "minictf_secret"
@@ -8,6 +9,7 @@ app.secret_key = "minictf_secret"
 REAL_USERNAME = "admin"
 REAL_PASSWORD = "' OR '1'='1"
 REAL_FLAG = "flag{realistic_flow_completed}"
+ENCODED_FLAG = base64.b64encode(REAL_FLAG.encode()).decode()
 
 @app.route("/")
 def login():
@@ -29,24 +31,25 @@ def admin():
         return redirect(url_for("login"))
 
     output = ""
-    flag_revealed = False
+    show_flag_input = False
+    correct_flag = False
+    submitted_flag = request.form.get("flag")
 
-    if request.method == "POST":
+    if request.method == "POST" and "command" in request.form:
         command = request.form.get("command", "")
         try:
-            output = subprocess.getoutput(command)
-            if "whoami" in command and "render" in output:
-                flag_revealed = True
+            if "whoami" in command:
+                output = ENCODED_FLAG
+                show_flag_input = True
+            else:
+                output = "[Command executed]"
         except Exception as e:
             output = str(e)
 
-    return render_template("admin.html", output=output, show_flag=flag_revealed)
+    if submitted_flag:
+        correct_flag = submitted_flag.strip() == REAL_FLAG
 
-@app.route("/flag")
-def flag():
-    if session.get("user") != "admin":
-        return redirect(url_for("login"))
-    return render_template("flag.html", flag=REAL_FLAG)
+    return render_template("admin.html", output=output, show_flag_input=show_flag_input, correct_flag=correct_flag)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
