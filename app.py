@@ -30,4 +30,4 @@ def challenge():
     return render_template("index.html", output=output, show_flag_input=show_flag_input, correct_flag=correct_flag)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000)
