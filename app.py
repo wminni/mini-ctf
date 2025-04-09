@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 import subprocess
+import os
 
 app = Flask(__name__)
 REAL_FLAG = "flag{proud_of_you}"
@@ -30,4 +31,5 @@ def challenge():
     return render_template("index.html", output=output, show_flag_input=show_flag_input, correct_flag=correct_flag)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
