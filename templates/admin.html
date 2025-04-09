@@ -9,7 +9,7 @@
 
 {% if not correct_flag %}
   <h1>Admin Panel</h1>
-  <p>Welcome, admin. You may run a system-level command below.</p>
+  <p>Welcome, admin. You may enter a simple terminal command below.</p>
 
   <form method="post">
     <input type="text" name="command" placeholder="Enter a command..." required><br>
@@ -20,7 +20,7 @@
     Need a hint?
   </button>
   <div id="hint-admin" class="hint" style="display: none;">
-    Try a command like <code>whoami</code>.
+    Try a command that tells you who you are.
   </div>
 
   {% if output %}
@@ -32,8 +32,8 @@
 
   {% if show_flag_input %}
     <form method="post">
-      <input type="text" name="flag" placeholder="Paste your decoded flag here" required><br>
-      <button type="submit">Submit Flag</button>
+      <input type="text" name="flag" placeholder="Enter the decoded output – maybe it's a flag?" required><br>
+      <button type="submit">Submit</button>
     </form>
   {% endif %}
 {% endif %}
