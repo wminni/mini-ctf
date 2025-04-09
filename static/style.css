@@ -62,9 +62,18 @@ pre {
 }
 
 .success {
-  color: #7fff7f;
   font-weight: bold;
   margin-top: 2rem;
+}
+
+.success h2 {
+  color: #7fff7f;
+}
+
+.success h3,
+.success li,
+.success p {
+  color: #f0f0f0;
 }
 
 a {
@@ -82,4 +91,10 @@ a:hover {
   font-size: 0.9rem;
   opacity: 0.75;
   margin-top: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
