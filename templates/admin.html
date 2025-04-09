@@ -5,6 +5,13 @@
   <title>Admin Panel – MiniCTF</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
+    body {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
     .success {
       color: #4caf50;
       font-weight: 300;
@@ -19,9 +26,11 @@
     }
     
     ul {
+      display: inline-block;
       text-align: left;
-      margin-left: 1.5rem;
-      margin-bottom: 1.5rem;
+      margin-left: 0;
+      padding-left: 0;
+      list-style-position: inside;
     }
     
     li {
@@ -43,11 +52,12 @@
     }
     
     #hint-admin {
-      margin: 1rem 0;
+      margin: 1rem auto;
       padding: 0.8rem;
       background-color: rgba(204, 58, 75, 0.1);
       border-left: 3px solid #cc3a4b;
       max-width: 600px;
+      text-align: left;
     }
     
     input, button {
@@ -94,6 +104,8 @@
       padding: 1rem;
       border-radius: 4px;
       max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
       overflow-x: auto;
     }
   </style>
