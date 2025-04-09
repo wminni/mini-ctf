@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, session
 import os
 import subprocess
 import base64
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = "minictf_secret"
@@ -10,6 +11,9 @@ REAL_USERNAME = "admin"
 REAL_PASSWORD = "' OR '1'='1"
 REAL_FLAG = "flag{nicely_done}"
 ENCODED_FLAG = base64.b64encode(REAL_FLAG.encode()).decode()
+
+MAX_ATTEMPTS = 50
+LOCKOUT_TIME = timedelta(minutes=10)
 
 @app.route("/")
 def login():
@@ -20,10 +24,26 @@ def auth():
     username = request.form.get("username", "")
     password = request.form.get("password", "")
 
+    if "login_attempts" not in session:
+        session["login_attempts"] = 0
+        session["first_attempt"] = datetime.utcnow().isoformat()
+
+    first_time = datetime.fromisoformat(session["first_attempt"])
+    if session["login_attempts"] >= MAX_ATTEMPTS:
+        if datetime.utcnow() - first_time < LOCKOUT_TIME:
+            return render_template("login.html", error="Too many login attempts detected. To protect against automated abuse (as required by the hosting platform), further attempts are temporarily disabled. Please try again after 10 minutes.")
+        else:
+            session["login_attempts"] = 0
+            session["first_attempt"] = datetime.utcnow().isoformat()
+
     if username == REAL_USERNAME and ("' OR '1'='1" in password or password == REAL_PASSWORD):
         session["user"] = "admin"
+        session.pop("login_attempts", None)
+        session.pop("first_attempt", None)
         return redirect(url_for("admin"))
-    return render_template("login.html", error="Login failed")
+
+    session["login_attempts"] += 1
+    return render_template("login.html", error="Login failed.")
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
