@@ -15,6 +15,14 @@
     <button type="submit">Login</button>
   </form>
 
+  <button onclick="document.getElementById('hint').style.display='block'">
+  Need a hint?
+</button>
+
+  <div id="hint" class="hint" style="display: none;">
+  Try entering something clever in the password field… like a little SQL magic.
+</div>
+
   {% if error %}
     <div class="error">{{ error }}</div>
   {% endif %}
