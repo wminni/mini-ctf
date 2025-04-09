@@ -98,3 +98,13 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+.error-box {
+  background-color: #cc3a4b22;
+  border-left: 4px solid #cc3a4b;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  border-radius: 6px;
+}
