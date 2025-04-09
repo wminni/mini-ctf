@@ -14,6 +14,14 @@
     <button type="submit">Run Command</button>
   </form>
 
+  <button onclick="document.getElementById('hint-admin').style.display='block'">
+  Need a hint?
+</button>
+
+  <div id="hint-admin" class="hint" style="display: none;">
+  Try a command that tells you who you are… maybe something like <code>whoami</code>.
+</div>
+
   {% if output %}
     <div>
       <h2>Output</h2>
