@@ -1,34 +1,52 @@
-from flask import Flask, request, render_template
-import subprocess
+from flask import Flask, request, render_template, redirect, url_for, session
 import os
+import subprocess
 
 app = Flask(__name__)
-REAL_FLAG = "flag{proud_of_you}"
+app.secret_key = "minictf_secret"
+
+REAL_USERNAME = "admin"
+REAL_PASSWORD = "' OR '1'='1"
+REAL_FLAG = "flag{realistic_flow_completed}"
 
 @app.route("/")
-def landing():
-    return render_template("landing.html")
+def login():
+    return render_template("login.html")
 
-@app.route("/challenge", methods=["GET", "POST"])
-def challenge():
+@app.route("/auth", methods=["POST"])
+def auth():
+    username = request.form.get("username", "")
+    password = request.form.get("password", "")
+
+    if username == REAL_USERNAME and ("' OR '1'='1" in password or password == REAL_PASSWORD):
+        session["user"] = "admin"
+        return redirect(url_for("admin"))
+    return render_template("login.html", error="Login failed")
+
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+    if session.get("user") != "admin":
+        return redirect(url_for("login"))
+
     output = ""
-    show_flag_input = False
-    correct_flag = False
-    submitted_flag = request.form.get("flag")
+    flag_revealed = False
 
-    if request.method == "POST" and "host" in request.form:
-        host = request.form["host"]
+    if request.method == "POST":
+        command = request.form.get("command", "")
         try:
-            output = subprocess.getoutput(f"ping -n 1 {host}")
-            if "admin" in output:
-                show_flag_input = True
+            output = subprocess.getoutput(command)
+            if "whoami" in command and "render" in output:
+                flag_revealed = True
         except Exception as e:
             output = str(e)
 
-    if submitted_flag:
-        correct_flag = submitted_flag.strip() == REAL_FLAG
+    return render_template("admin.html", output=output, show_flag=flag_revealed)
 
-    return render_template("index.html", output=output, show_flag_input=show_flag_input, correct_flag=correct_flag)
+@app.route("/flag")
+def flag():
+    if session.get("user") != "admin":
+        return redirect(url_for("login"))
+    return render_template("flag.html", flag=REAL_FLAG)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
