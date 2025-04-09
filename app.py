@@ -8,7 +8,7 @@ app.secret_key = "minictf_secret"
 
 REAL_USERNAME = "admin"
 REAL_PASSWORD = "' OR '1'='1"
-REAL_FLAG = "flag{realistic_flow_completed}"
+REAL_FLAG = "flag{nicely_done}"
 ENCODED_FLAG = base64.b64encode(REAL_FLAG.encode()).decode()
 
 @app.route("/")
