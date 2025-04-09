@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MiniCTF Challenge</title>
+</head>
+<body>
+  <h1>MiniCTF Challenge</h1>
+  <p>Can you bypass the logic and extract the hidden flag?</p>
+
+  <form method="post">
+    <label>Host:</label><br>
+    <input type="text" name="host" placeholder=""><br>
+    <button type="submit">Run</button>
+  </form>
+
+  <button type="button" onclick="document.getElementById('hint').style.display='block'">
+    Need a hint?
+  </button>
+  <div id="hint" style="display: none; margin-top: 10px;">
+    Try ending your input with something that might give you system-level information...
+  </div>
+
+  {% if output %}
+    <div>
+      <h2>Output</h2>
+      <pre>{{ output }}</pre>
+    </div>
+  {% endif %}
+
+  {% if show_flag_input %}
+    <form method="post">
+      <label>Enter the flag:</label><br>
+      <input type="text" name="flag" placeholder="flag{...}"><br>
+      <button type="submit">Submit Flag</button>
+    </form>
+  {% endif %}
+
+  {% if correct_flag %}
+    <div>
+      <h2>Challenge Summary</h2>
+      <ul>
+        <li>Command Injection allowed shell access.</li>
+        <li>Input led you to the correct flag.</li>
+      </ul>
+    </div>
+  {% endif %}
+</body>
+</html>
